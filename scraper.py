@@ -11,18 +11,28 @@ content = font.text # Armazena o conteúdo convertendo em texto (string)
 
 # === BeautifulSoup === #
 
-site = BeautifulSoup(content,'html.parser') # Cria estrutura html
+site = BeautifulSoup(content,'html.parser') # Monta estrutura html
 
-news = site.find_all('div', class_='feed-post-body')
+bnews = site.find_all('div', class_='bstn-hl')
+news = site.find_all('div', class_='feed-post-body') # Busca e armazena tag div com classe específica
 
-new = news[0]
 
 for new in news:
-    for new in new:
-        print(new.get_text())
-        
+
+    header = new.find('span', {'class':'feed-post-header-chapeu'}).text
+    title = new.find('a', {'class':'feed-post-link'}).text
+    date = new.find('span', {'class':'feed-post-datetime'}).text
+    meta = new.find('span', {'class':'feed-post-metadata-section'}).text
+
+    print('\n{}\n{}\n{}\n{}\n'.format(header, title, date, meta))
+
+for bnew in bnews:
+    b_header = bnew.find('div', {'class':'bstn-headline-skeleton'})
+    print('{}\n'.format(b_header))
+
+    #print(bnews)
+
 
 # === Retorno === #
 print('\n', site.title.string)
 print('', len(news), 'Notícias encontradas')
-print(' cada notícia contém {} elementos'.format(len(new)))
